@@ -28,18 +28,19 @@ public class Profile extends HttpServlet {
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
+	@SuppressWarnings("unused")
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		HttpSession session = request.getSession();
-		PrintWriter out = response.getWriter();
-		session.invalidate();
-		request.getRequestDispatcher("Login.html").include(request, response);
-		if (session != null) {
-			String name = (String) session.getAttribute("name");
-			out.print("Chào bạn, " + name + " đến với trang quản lý tài khoản");
-		} else {
-			out.print("Xin vui lòng đăng nhập");
-			response.sendRedirect("Login2.html");
-		}
+		 	HttpSession session = request.getSession(false); // false: không tạo mới nếu chưa có
+		    PrintWriter out = response.getWriter();
+		    response.setContentType("text/html;charset=UTF-8");
+
+		    if (session != null && session.getAttribute("name") != null) {
+		        String name = (String) session.getAttribute("name");
+		        out.print("<h2>Chào bạn, " + name + " đến với trang quản lý tài khoản</h2>");
+		    } else {
+		        out.print("Xin vui lòng đăng nhập<br>");
+		        response.sendRedirect("Login2.html");
+		    }
 
 	}
 
